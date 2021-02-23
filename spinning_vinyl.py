@@ -76,7 +76,6 @@ vinyl_url = useTemplate('0f8a6a9156ed4a7c84b76a934a985b8f', vinyl_path, 'waterma
 downloadImage(vinyl_url, finished_watermarked_location)
 
 finished_vinyl = cv2.imread(finished_watermarked_location)
-# cv2.imshow('Final Result', finished_vinyl)
 
 # Now we make a list of images that represent each frame
 no_of_frames = 60
@@ -93,12 +92,11 @@ for i in range(no_of_frames):
 # Length of our animation in seconds
 length = 2
 
-# assembly.add_file(open('Assets/Frames/oos/160.png', 'rb'))
-
 # Overrides our template with the necessary settings
 assembly.add_step('animated', '/video/merge', {'duration': length, 'framerate': no_of_frames / length})
 assembly_response = assembly.create(retries=5, wait=True)
 assembly_url = assembly_response.data.get('results').get('animated')[0].get('ssl_url')
+
 print(assembly_url)
 final_gif_location = 'Assets/finished_gif.gif'
 downloadImage(assembly_url, final_gif_location)
