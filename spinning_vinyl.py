@@ -5,7 +5,10 @@ import requests
 import cv2
 import numpy as np
 
-tl = client.Transloadit('6528ded4ea0d49e2a8f1197b0dc77d85', '1ed089c8e5def7d124df1685165736446815e30d')
+TRANSLOADIT_KEY = os.environ.get('TRANSLOADIT_KEY')
+TRANSLOADIT_SECRET = os.environ.get('TRANSLOADIT_SECRET')
+
+tl = client.Transloadit(TRANSLOADIT_KEY, TRANSLOADIT_SECRET)
 
 img_name = 'okcomputer'
 img_path = 'Assets/{name}.jpg'.format(name=img_name)
@@ -60,7 +63,7 @@ def maskImage(img_path):
 
 # Resize the image using a template
 # Automatically converts it to a png
-resize_url = useTemplate('cea84f9d24c74003ab7febd0187c5b7d', img_path, 'resize_image')
+resize_url = useTemplate('cea84f9d24c74003ab7febd0187c5b7d', img_path, 'resize')
 
 # Download the image locally
 resized_image_location = 'Assets/resized_image.png'
