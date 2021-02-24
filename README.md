@@ -448,5 +448,6 @@ final_gif_location = 'Assets/finished_gif.gif'
 downloadImage(assembly_url, final_gif_location)
 ```
 
-I hope you enjoyed making this, and maybe you've learned some things about the Transloadit API that you can use on your next project! If you want to check out the GitHub repo you can find it [here](https://github.com/Missing-Tech/Vinyl-Gif-Maker). 
+I hope you enjoyed making this, and maybe you've learned some things about the Transloadit API that you can use on your next project! If you want to take this project even further, why not make it an MP4 and add  some music to go along with the vinyl record, or by using [Uppy](https://uppy.io/) to let users upload their own image on the web to put on a vinyl record? 
 
+If you want to check out the GitHub repo you can find it [here](https://github.com/Missing-Tech/Vinyl-Gif-Maker). 
