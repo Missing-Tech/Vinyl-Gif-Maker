@@ -43,7 +43,6 @@ def useTemplate(templateID, file_path, result_name, get_url=True, override_url='
 
 
 def maskImage(img_path):
-    # Mask the image
     # Reads the input image
     img = cv2.imread(img_path)
     # Creates a mask with the same size as the image
@@ -52,8 +51,10 @@ def maskImage(img_path):
     mask = cv2.circle(mask, (175, 175), 175, (255, 255, 255), -1)
     # Makes a small whole in the centre of the mask
     mask = cv2.circle(mask, (175, 175), 20, (0, 0, 0), -1)
-    result = cv2.bitwise_and(img, mask)
 
+    cv2.imwrite('.github/images/mask2.png', mask)
+
+    result = cv2.bitwise_and(img, mask)
 
     result_location = 'Assets/mask.png'
     cv2.imwrite(result_location, result)
@@ -69,10 +70,8 @@ def maskImage(img_path):
 # Resize the image using a template
 # Automatically converts it to a png
 resize_url = useTemplate('cea84f9d24c74003ab7febd0187c5b7d', img_path, 'resize')
-
 # Download the image locally
 resized_image_location = 'Assets/resized_image.png'
-
 downloadImage(resize_url, resized_image_location)
 
 # Masks the image
