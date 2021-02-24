@@ -268,7 +268,9 @@ However, we don't want this black BG, so this is where the second half of the fu
     return remove_bg_url
 ```
 Using our template from earlier, this will make all the black pixels transparent for us - giving us this:
+
 ![](https://raw.githubusercontent.com/Missing-Tech/Vinyl-Gif-Maker/main/.github/images/trimmed.png)
+
 We'll call our function like so:
 ```
 # Masks the image
@@ -283,7 +285,9 @@ vinyl_url = useTemplate([WATERMARK_IMAGE_TEMPLATE_ID], vinyl_path, 'watermark', 
 downloadImage(vinyl_url, finished_watermarked_location)
 ```
 This gives us this result:
+
 ![](https://raw.githubusercontent.com/Missing-Tech/Vinyl-Gif-Maker/main/.github/images/overlayed.png)
+
 We'll make a reference to this
 ```
 finished_vinyl = cv2.imread(finished_watermarked_location)
@@ -323,6 +327,7 @@ final_gif_location = 'Assets/finished_gif.gif'
 downloadImage(assembly_url, final_gif_location)
 ```
 Meaning we finally have our *spinning vinyl*!🎉
+
 ![](https://raw.githubusercontent.com/Missing-Tech/Vinyl-Gif-Maker/main/.github/images/finished_gif.gif)
 
 **Congratulations on making it this far!** I know its been long but I hope you think it's worth it :)
