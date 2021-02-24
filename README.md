@@ -255,9 +255,13 @@ This function has two halves, lets go through them individually.
     cv2.imwrite(result_location, result)
 ```
 Here we create a black image with the same size as the image specified, and then create two white circles to produce a donut like so:
+
 ![](https://raw.githubusercontent.com/Missing-Tech/Vinyl-Gif-Maker/main/.github/images/mask2.png)
+
 We then perform a bitwise AND operation on both the mask and our original image, meaning that the image is shown where it has a pixel, *and* where the mask is white. This gives us this result:
+
 ![](https://raw.githubusercontent.com/Missing-Tech/Vinyl-Gif-Maker/main/.github/images/mask.png)
+
 However, we don't want this black BG, so this is where the second half of the function is useful.
 ```
     # However this leaves a black BG which we don't want
