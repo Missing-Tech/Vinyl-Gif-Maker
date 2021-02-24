@@ -15,7 +15,6 @@ img_path = 'Assets/{name}.jpg'.format(name=img_name)
 vinyl_path = 'Assets/vinyl.png'
 remove_bg_location = 'Assets/trimmed_image.png'
 
-
 def downloadImage(url, location):
     # Sends a request to the url
     r = requests.get(url)
@@ -26,13 +25,19 @@ def downloadImage(url, location):
 
 
 def useTemplate(templateID, file_path, result_name, get_url=True, override_url=''):
+    # Creates a new assembly on our Transloadit client using our template ID
     assembly = tl.new_assembly({'template_id': templateID})
     # This is for the watermark step, not very pretty however
     if override_url != '':
         assembly.add_step('watermark', '/image/resize', {'watermark_url': override_url})
+    # Adds the file to the assembly
     assembly.add_file(open(file_path, 'rb'))
+    # Attempts to create an assembly, if it fails after 5 tries it'll throw an error
     assembly_response = assembly.create(retries=5, wait=True)
     if get_url:
+        # Parses the JSON returned from the assembly to find the URL of our result
+        # Since, in our templates we're not exporting the file it gets stored on Transloadit servers
+        # For a maximum of 24 hours
         assembly_url = assembly_response.data.get('results').get(result_name)[0].get('ssl_url')
         return assembly_url
 
