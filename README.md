@@ -140,7 +140,7 @@ All this will do is send a request to the URL that we give it, create a new imag
   }
 }
 ```
-This template is very simple, it will enable the alpha channnel on our PNG image, and then set all black pixels (0,0,0) to be transparent. However, this also means that we have to be careful if we're using album art with a black background - such as the [Dark Side of the Moon, by Pink Floyd](https://raw.githubusercontent.com/Missing-Tech/Vinyl-Gif-Maker/main/.github/images/darkside.gif).
+This template is very simple, it will enable the alpha channnel on our PNG image, and then set all black pixels (0,0,0) to be transparent. However, this also means that we have to be careful if we're using album art with a black background - such as the [Dark Side of the Moon, by Pink Floyd](https://github.com/Missing-Tech/Vinyl-Gif-Maker/blob/main/.github/images/darkside.gif).
 ### Overlaying the image
 Remember from earlier how we had the `override_url`? This is where that step becomes quite important, we're going to take the URL of the image from our last step - and supply it to the `/image/resize` robot here in order to get a finished vinyl image which we can rotate later. Make sure that the name of the watermark step and the name in the function match.
 ```
