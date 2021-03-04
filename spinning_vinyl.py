@@ -30,6 +30,7 @@ def useTemplate(templateID, file_path, result_name, get_url=True, override_url='
     # This is for the watermark step, not very pretty however
     if override_url != '':
         assembly.add_step('watermark', '/image/resize', {'watermark_url': override_url})
+
     # Adds the file to the assembly
     assembly.add_file(open(file_path, 'rb'))
     # Attempts to create an assembly, if it fails after 5 tries it'll throw an error
@@ -80,27 +81,15 @@ trimmed_url = maskImage(resized_image_location)
 # Now we add the watermark to the vinyl
 finished_watermarked_location = 'Assets/vinyl_finished.png'
 vinyl_url = useTemplate('0f8a6a9156ed4a7c84b76a934a985b8f', vinyl_path, 'watermark', True, trimmed_url)
-downloadImage(vinyl_url, finished_watermarked_location)
-
-finished_vinyl = cv2.imread(finished_watermarked_location)
 
 # Now we make a list of images that represent each frame
 no_of_frames = 60
-assembly = tl.new_assembly({'template_id': 'e8129b18ee35441cb1e7c2f43e777332'})
-directory = 'Assets/Frames/{image}'.format(image=img_name)
 # Length of our animation in seconds
 length = 2
 
-for i in range(no_of_frames):
-    if not os.path.exists(directory):
-        os.mkdir(directory)
-    # Creates an image based on the index in the animation
-    # We pass this to the robot so it knows how many degrees to rotate the image by
-    location = '{directory}/{index}.png'.format(directory=directory, index=round(i*360/no_of_frames))
-    cv2.imwrite(location, finished_vinyl)
-    assembly.add_file(open(location, 'rb'))
-
+assembly = tl.new_assembly({'template_id': 'e8129b18ee35441cb1e7c2f43e777332'})
 # Overrides our template with the necessary settings
+assembly.add_step('import', '/http/import', {'url': vinyl_url})
 assembly.add_step('animated', '/video/merge', {'duration': length, 'framerate': no_of_frames / length})
 assembly_response = assembly.create(retries=5, wait=True)
 assembly_url = assembly_response.data.get('results').get('animated')[0].get('ssl_url')
