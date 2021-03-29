@@ -15,6 +15,7 @@ img_path = 'Assets/{name}.jpg'.format(name=img_name)
 vinyl_path = 'Assets/vinyl.png'
 remove_bg_location = 'Assets/trimmed_image.png'
 
+
 def downloadImage(url, location):
     # Sends a request to the url
     r = requests.get(url)
@@ -24,15 +25,14 @@ def downloadImage(url, location):
     image.close()
 
 
-def useTemplate(templateID, file_path, result_name, get_url=True, override_url=''):
-    # Creates a new assembly on our Transloadit client using our template ID
-    assembly = tl.new_assembly({'template_id': templateID})
-    # This is for the watermark step, not very pretty however
-    if override_url != '':
-        assembly.add_step('watermark', '/image/resize', {'watermark_url': override_url})
+def useTemplate(templateID, file_path='', result_name='', get_url=True, fields=''):
+    # Creates a new assembly on our Transloadit client using our template ID and specified fields
+    assembly = tl.new_assembly({'template_id': templateID, 'fields': fields})
 
     # Adds the file to the assembly
-    assembly.add_file(open(file_path, 'rb'))
+    if file_path != '':
+        assembly.add_file(open(file_path, 'rb'))
+
     # Attempts to create an assembly, if it fails after 5 tries it'll throw an error
     assembly_response = assembly.create(retries=5, wait=True)
     if get_url:
@@ -80,20 +80,19 @@ trimmed_url = maskImage(resized_image_location)
 
 # Now we add the watermark to the vinyl
 finished_watermarked_location = 'Assets/vinyl_finished.png'
-vinyl_url = useTemplate('0f8a6a9156ed4a7c84b76a934a985b8f', vinyl_path, 'watermark', True, trimmed_url)
+vinyl_url = useTemplate('0f8a6a9156ed4a7c84b76a934a985b8f', vinyl_path, 'watermark', True, {'url': trimmed_url})
 
-# Now we make a list of images that represent each frame
-no_of_frames = 60
+# Frame rate of our animation
+frame_rate = 60
 # Length of our animation in seconds
 length = 2
 
-assembly = tl.new_assembly({'template_id': 'e8129b18ee35441cb1e7c2f43e777332'})
-# Overrides our template with the necessary settings
-assembly.add_step('import', '/http/import', {'url': vinyl_url})
-assembly.add_step('animated', '/video/merge', {'duration': length, 'framerate': no_of_frames / length})
-assembly_response = assembly.create(retries=5, wait=True)
-assembly_url = assembly_response.data.get('results').get('animated')[0].get('ssl_url')
+# Makes it into a GIF using the image we just made
+final_gif_url = useTemplate('e8129b18ee35441cb1e7c2f43e777332',
+                            result_name='animated',
+                            get_url=True,
+                            fields={'url': vinyl_url, 'duration': length, 'framerate': frame_rate})
 
-print(assembly_url)
+print(final_gif_url)
 final_gif_location = 'Assets/finished_gif.gif'
-downloadImage(assembly_url, final_gif_location)
+downloadImage(final_gif_url, final_gif_location)
